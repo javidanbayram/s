@@ -1,9 +1,12 @@
-import { useState, useCallback } from 'react'
+import { useState } from 'react'
 import OceanExperience from './components/OceanExperience.jsx'
+import CinematicPreloader from './components/CinematicPreloader.jsx'
+import KineticCursor from './components/KineticCursor.jsx'
 
 export default function App() {
   const [isZoomed, setIsZoomed] = useState(false)
   const [activeHologram, setActiveHologram] = useState(null)
+  const [isRevealed, setIsRevealed] = useState(false)
 
   let hintText = "click Sama's blue eye to zoom into her essence"
   if (isZoomed) {
@@ -15,15 +18,24 @@ export default function App() {
   }
 
   return (
-    <main className="stage">
-      <h1 className="visually-hidden">Memory Ocean — for Sama</h1>
-      <OceanExperience
-        onZoomStateChange={setIsZoomed}
-        onHologramChange={setActiveHologram}
+    <>
+      <CinematicPreloader
+        onFadeOutStart={() => setIsRevealed(true)}
       />
-      <p className="hint" key={hintText} aria-hidden="true">
-        {hintText}
-      </p>
-    </main>
+      <KineticCursor />
+      <main className={`stage ${isRevealed ? 'revealed' : ''}`}>
+        <h1 className="visually-hidden">Memory Ocean — for Sama</h1>
+        <OceanExperience
+          onZoomStateChange={setIsZoomed}
+          onHologramChange={setActiveHologram}
+        />
+        {isRevealed && (
+          <p className="hint" key={hintText} aria-hidden="true">
+            {hintText}
+          </p>
+        )}
+      </main>
+    </>
   )
 }
+

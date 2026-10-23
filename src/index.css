@@ -1,8 +1,8 @@
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,300&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,300;1,400&display=swap');
 
 :root {
   --bg: #F7F9FA;
-  --accent: #2A4050;
+  --accent: #1E3A5F;
 }
 
 *,
@@ -11,6 +11,20 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+}
+
+/* Hide default cursor globally on mouse/pointer devices */
+@media (hover: hover) and (pointer: fine) {
+  *,
+  *::before,
+  *::after,
+  html,
+  body,
+  #root,
+  .stage,
+  canvas {
+    cursor: none !important;
+  }
 }
 
 html,
@@ -26,15 +40,76 @@ body,
 .stage {
   position: fixed;
   inset: 0;
-  cursor: crosshair;
+  opacity: 0;
+  transition: opacity 1.8s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.stage.revealed {
+  opacity: 1;
 }
 
 .ocean-canvas {
   position: absolute !important;
   inset: 0;
-  touch-action: none; /* let touch-drag create ripples instead of scrolling */
+  touch-action: none;
 }
 
+/* Kinetic Watercolor Cursor Canvas */
+.kinetic-cursor-canvas {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 999999;
+}
+
+/* Cinematic Typewriter Preloader Overlay */
+.preloader-overlay {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  background: #FFFFFF;
+  z-index: 99998;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+}
+
+.preloader-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 2rem;
+}
+
+.preloader-typewriter-text {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-weight: 300;
+  font-size: clamp(1.05rem, 1.6vw, 1.35rem);
+  letter-spacing: 0.22em;
+  color: #1E3A5F;
+  line-height: 1.6;
+}
+
+.preloader-caret {
+  display: inline-block;
+  margin-left: 3px;
+  font-weight: 200;
+  color: #1E3A5F;
+  animation: caret-blink 0.75s ease-in-out infinite;
+}
+
+@keyframes caret-blink {
+  0%, 100% { opacity: 0; }
+  50% { opacity: 0.9; }
+}
+
+/* Minimalist ambient hint text */
 .hint {
   position: absolute;
   left: 50%;
@@ -46,17 +121,17 @@ body,
   font-size: clamp(0.9rem, 1.4vw, 1.15rem);
   letter-spacing: 0.32em;
   text-transform: lowercase;
-  color: rgba(42, 64, 80, 0.65);
+  color: rgba(30, 58, 95, 0.70);
   pointer-events: none;
   user-select: none;
   opacity: 0;
-  animation: hint 9s ease-in-out 2.5s forwards;
+  animation: hint 9s ease-in-out 3s forwards;
 }
 
 @keyframes hint {
   0% { opacity: 0; filter: blur(6px); }
   25% { opacity: 1; filter: blur(0); }
-  70% { opacity: 1; filter: blur(0); }
+  75% { opacity: 1; filter: blur(0); }
   100% { opacity: 0; filter: blur(4px); }
 }
 
